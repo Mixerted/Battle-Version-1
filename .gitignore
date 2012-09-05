@@ -1,27 +1,132 @@
-*.py[co]
+from random import randint 
+from sys import exit
 
-# Packages
-*.egg
-*.egg-info
-dist
-build
-eggs
-parts
-bin
-var
-sdist
-develop-eggs
-.installed.cfg
+def damage ():
+	#This section will cycle to ensure there is an appropriate value for the punch
+	
+	while True:
+		try:
+			global punch 
+			punch = int(raw_input("Scale of 1 - 10 how hard do you punch: "))
+			break
+		except ValueError:
+			print " "
+			print "You explode for not following the rules and the dragon wins."
+			exit (0)
+	combat ()		
+	
 
-# Installer logs
-pip-log.txt
+def train ():
+	#This section is designed to allow a lower punch score the ability to complete the game 
+	#Needs to be improved as I could not figure out how to modify the global punch value with the modified score so it is a static number 
 
-# Unit test / coverage reports
-.coverage
-.tox
+	print "Ready to train harder..."
+	print "Yes or No?"
+	next = raw_input("> ")
+	
+	if next == "yes" or next == "Yes":
+		global punch
+		trained = 10 - punch 
+		print "You have gained %r punching power" % trained
+		punch = 10
+		
+		print " "
+		print "Ready for battle?"
+		
+		next2 = raw_input("> ")
+		if next2 == "yes" or next == "Yes":
+			battle()
+		
+		else:	
+			print " "
+			print "The dragon finds you training and bites your head off because you suck."
+			exit (0)
+	else:	
+		print " "
+		print "Pain is temporary. Quitting lasts forever."		
+		exit (0)
+	
+def battle ():
+		#Section calculates the outcome of the damage
+		#Player wins on a 10, Dragon wins on 9 and 10
+		
+		pdam = punch - randint(0,punch) 
+		print " "
+		print "You did %r damage" % pdam
+		
+		health = 10 - pdam
+		if health == 0:
+			print " "
+			print "The dragon has %r life left." % health
+			print "You have won the battle!"
+			print "Good job!"
+			print " "
+			exit (0)
+		
+		elif health > 8:
+			print " "
+			print "You have attacked the dragon and wounded him"
+			print "The dragon has %r life left." % health
+			print "The then dragon strikes back and bites your head off"
+			print "You have died. /sadpanda"
+			print " "
+			exit (0)
+			
+		else:
+			print " "
+			print "The dragon has %r life left.." % health
+			print "However it also regenerates and is back to full health"
+			print "Attack again - Yes or No?"
+			next = raw_input("> ")
+				
+			if next == "Yes" or next == "yes":
+				battle ()
+		
+			else:
+				print " "
+				print "Smart move"
+				print "A man is not finished when he is defeated. He is finished when he quits."
+				print " "
+				exit (0)
 
-#Translations
-*.mo
+def combat ():
+	#Section determines if the player can win or not
+	#if player selects a score that will prevent them from winning directs them to the training section giving them a chance
 
-#Mr Developer
-.mr.developer.cfg
+	next = raw_input("Attack - Yes or No?> ")
+	
+	if (next == "yes" or next == "Yes") and (punch == 10):
+		battle ()
+	
+	elif next == "no" or "No":
+		print " "
+		print "You must prepare ..."
+		train ()
+				
+	elif (next == "yes" or next == "Yes") and punch < 10:
+		print " "
+		print "Do more push ups"
+		train ()
+			
+	else:
+		print "You are trying to trick the dragon into thinking you are more powerful than you are."
+		print "But he is to smart for that ;)"
+		print " "
+		damage ()		
+			
+def start ():
+	#Start of program desgined to set the mood
+	
+	print " "
+	print " "
+	print " "
+	print "You have been born in combat and are about to enter the arena."
+	print "As you enter the arena you see the mist and before you is a dragon..."
+	print "Hopefully you have trained hard!"
+	print " "
+	print " "
+	
+	damage ()		
+		
+			
+start ()
